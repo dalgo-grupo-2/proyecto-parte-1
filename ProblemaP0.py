@@ -7,8 +7,8 @@ for __ in range(numero_casos):
     np = 0
     sp = 0
     for n in case_list:
-    	if n % 2 == 0 :
-    		np=np+1
-    		sp = sp+n
+        if n % 2 == 0:
+            np=np+1
+            sp = sp+n
     print(np,sp)
 

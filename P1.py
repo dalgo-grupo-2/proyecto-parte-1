@@ -1,6 +1,17 @@
 import sys
 import math
 
+numero_casos = int(sys.stdin.readline())
+for __ in range(numero_casos):
+    case_list = list(map(int, sys.stdin.readline().split()))
+    np = 0
+    sp = 0
+    for n in case_list:
+        if n % 2 == 0:
+            np=np+1
+            sp = sp+n
+    print(np,sp)
+
 pesos = {
     ("11","12"):2,
     ("12","11"):2,
@@ -48,18 +59,19 @@ caminos = {
 }
 
 def graph():
-    hecho=False
+    
+    hecho=True
+    global debilitamiento
     debilitamiento = True
-    Djikstra = False
-    espacioTrabajo = "Este"
+    Djikstra = True
+    espacioTrabajo = "El otro"
     pensarlo = True
-    implementacion = False
-    proyecto = None
+    implementacion = True
+    proyecto = 0.5
     documentoAnalisis = None
-    deOne = 1000000000
-    loLograremos = "100%"
+    deOne = math.inf
+    loLograremos = "110%"
     return
-
 
 def torreDeTeletransportacion(caminos:dict, pesos:dict, inicio:str, final:str)->int:
     '''
@@ -70,7 +82,13 @@ def torreDeTeletransportacion(caminos:dict, pesos:dict, inicio:str, final:str)->
     '''
     #Llaves: "nodo de Entrada"
     #Valores: "peso hasta el nodo"
+    """dist array"""
     distancias = {}
+
+    #Lista de los nodos que ya se han marcado: ["nodo","nodo"]
+    """A = {s}"""
+    recorridos = ["11"]
+
     #Lista de llaves: ["nodo","nodo"]
     llaves = list(caminos.keys())
     #Se llena el diccionario de distancias con infinitos
@@ -82,40 +100,28 @@ def torreDeTeletransportacion(caminos:dict, pesos:dict, inicio:str, final:str)->
         distancias[adyacente] = pesos[("11",adyacente)]
     
     last = "11"
-    #Lista de los nodos que ya se han marcado: ["nodo","nodo"]
-    recorridos = ["11"]
-    
-    minimo = math.inf
     nodo = None
-    
-    #Se cambia de nodo con menor peso de los adyacentes al inicial
-    for adyacente in caminos[last]:
-        if pesos[(last,adyacente)] <minimo:
-            minimo = pesos[(last,adyacente)]
-            nodo = adyacente
-    w = nodo
-    
-    #
-    while (last != llaves[-1] ):
+
+    while (len(recorridos)!= len(llaves)):
         minimo = math.inf
 
-        adyacentes = []
+        #Se halla el siguiente nodo a recorrer
         #No es n al cubo, caminos[nodo] nunca será mayor a 3
         for node in recorridos:
-            for camino in caminos[nodo]:
-                if camino not in recorridos and(node,camino) in pesos.keys() and pesos[(node,camino)]<minimo:
+            for camino in caminos[node]:
+                if camino not in recorridos and pesos[(node,camino)]<minimo:
                     minimo = pesos[(node,camino)]
-                    nodo = adyacente
-        
+                    nodo = camino
+
+        #w es el nodo menor peso 
         w = nodo
+        #Se halla la mínima distancia acumulada hasta w
         for adyacente in caminos[w]:
             distancias[adyacente] = min(distancias[adyacente],distancias[w] + pesos[(w,adyacente)])
-        last = w
+        
+        #Se agrega el nodo de menor peso a los nodos recorridos
         recorridos.append(w)
 
-    print(recorridos)
-    minimo = distancias[last]
-    print(minimo)
 
 torreDeTeletransportacion(caminos, pesos, "11", "43")
 
