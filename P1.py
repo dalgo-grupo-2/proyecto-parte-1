@@ -1,79 +1,7 @@
 import sys
 import math
 
-numero_casos = int(sys.stdin.readline())
-for __ in range(numero_casos):
-    case_list = list(map(int, sys.stdin.readline().split()))
-    np = 0
-    sp = 0
-    for n in case_list:
-        if n % 2 == 0:
-            np=np+1
-            sp = sp+n
-    print(np,sp)
-
-pesos = {
-    ("11","12"):2,
-    ("12","11"):2,
-    ("12","13"):2,
-    ("13","12"):2,
-    
-    ("21","22"):1,
-    ("22","21"):1,
-    ("22","23"):1,
-    ("23","22"):1,
-    
-    ("31","32"):3,
-    ("32","31"):3,
-    ("32","33"):3,
-    ("33","32"):3,
-
-    ("41","42"):0,
-    ("42","41"):0,
-    ("42","43"):0,
-    ("43","42"):0,
-
-    ("12","31"):0,
-    ("13","43"):0,
-    ("21","42"):0,
-    ("32","41"):0
-}
-
-caminos = {
-    "11":["12"],
-    "12":["11","13","31"],
-    "13":["12","43"],
-    
-    "21":["22","42"],
-    "22":["21","23"],
-    "23":["22"],
-
-    "31":["32"],
-    "32":["31","33","41"],
-    "33":["32"],
-    
-
-    "41":["42"],
-    "42":["41","43"],
-    "43":["42"]
-}
-
-def graph():
-    
-    hecho=True
-    global debilitamiento
-    debilitamiento = True
-    Djikstra = True
-    espacioTrabajo = "El otro"
-    pensarlo = True
-    implementacion = True
-    proyecto = 0.5
-    documentoAnalisis = None
-    deOne = math.inf
-    loLograremos = "110%"
-    return
-
-def torreDeTeletransportacion(caminos:dict, pesos:dict, inicio:str, final:str)->int:
+def torreDeTeletransportacion(caminos:dict, pesos:dict)->int:
     '''
     Esta funcion toma el diccionario con los posibles caminos entre vertices y otro
     diccionario con los pesos de estos caminos e implementa el algoritmo de Dijkstra
@@ -82,11 +10,9 @@ def torreDeTeletransportacion(caminos:dict, pesos:dict, inicio:str, final:str)->
     '''
     #Llaves: "nodo de Entrada"
     #Valores: "peso hasta el nodo"
-    """dist array"""
     distancias = {}
 
     #Lista de los nodos que ya se han marcado: ["nodo","nodo"]
-    """A = {s}"""
     recorridos = ["11"]
 
     #Lista de llaves: ["nodo","nodo"]
@@ -121,8 +47,43 @@ def torreDeTeletransportacion(caminos:dict, pesos:dict, inicio:str, final:str)->
         
         #Se agrega el nodo de menor peso a los nodos recorridos
         recorridos.append(w)
+    masCorto = distancias[llaves[-1]]
+    if masCorto == math.inf:
+        masCorto = "NO EXISTE"
+    return masCorto
 
+numero_casos = int(sys.stdin.readline())
+for __ in range(numero_casos):
+    pesos = {}
+    caminos = {}
 
-torreDeTeletransportacion(caminos, pesos, "11", "43")
+    linea1 = sys.stdin.readline().split()
+    pisos = int(linea1[0])
+    cuartos = int(linea1[1])
+    portales = int(linea1[2])
+    energias =  sys.stdin.readline().split()
 
+    for piso in range(1,pisos+1):
+        for cuarto in range(1,cuartos):
+            primerCuarto = str(piso)+str(cuarto)
+            cuartoAdy = str(piso)+str(cuarto+1)
+            pesos[(primerCuarto,cuartoAdy)] = int(energias[piso-1])
+            pesos[(cuartoAdy,primerCuarto)] = int(energias[piso-1])
+            listaCaminosPrimero = []
+            listaCaminosPrimero.append(cuartoAdy)
+            listaCaminosAdy = []
+            listaCaminosAdy.append(primerCuarto)
+            if primerCuarto not in caminos:
+                caminos[primerCuarto] = listaCaminosPrimero
+            else:
+                caminos[primerCuarto].extend(listaCaminosPrimero)
+            caminos[cuartoAdy] = listaCaminosAdy
+            
+    for p in range(portales):
+        portales = sys.stdin.readline().split()
+        inicioPortal = str(portales[0])+str(portales[1])
+        finPortal = str(portales[2])+str(portales[3])
+        pesos[(inicioPortal,finPortal)] = 0
+        caminos[inicioPortal].append(finPortal)
+    print(torreDeTeletransportacion(caminos,pesos))
 
