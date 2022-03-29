@@ -1,3 +1,7 @@
+# Juan Diego Yepes - 202022391
+# Juan Diego Calixto - 202020774
+# Sergio Pardo Gutiérrez - 202025720
+
 import sys
 import math
 
@@ -25,7 +29,6 @@ def torreDeTeletransportacion(caminos:dict, pesos:dict)->int:
     for adyacente in caminos["11"]:
         distancias[adyacente] = pesos[("11",adyacente)]
     
-    last = "11"
     nodo = None
 
     while (len(recorridos)!= len(llaves)):
@@ -47,6 +50,7 @@ def torreDeTeletransportacion(caminos:dict, pesos:dict)->int:
         
         #Se agrega el nodo de menor peso a los nodos recorridos
         recorridos.append(w)
+
     masCorto = distancias[llaves[-1]]
     if masCorto == math.inf:
         masCorto = "NO EXISTE"
