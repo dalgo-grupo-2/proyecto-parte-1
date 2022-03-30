@@ -12,4 +12,4 @@ cd C:\Usuarios\jorge\carpeta1\carpeta2\...\
 
 3. Hacer referencia al archivo ProblemaP1.py
 
-python ProblemaP0.py < P1.in > P2.out
+python ProblemaP1.py < P1.in > P1.out

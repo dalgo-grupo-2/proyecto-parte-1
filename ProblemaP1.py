@@ -42,7 +42,7 @@ def torreDeTeletransportacion(caminos:dict, pesos:dict)->int:
                     minimo = pesos[(node,camino)]
                     nodo = camino
 
-        #w es el nodo menor peso 
+        #w es el nodo menor peso
         w = nodo
         #Se halla la mínima distancia acumulada hasta w
         for adyacente in caminos[w]:
