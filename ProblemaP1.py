@@ -29,21 +29,20 @@ def torreDeTeletransportacion(caminos:dict, pesos:dict)->int:
     for adyacente in caminos["11"]:
         distancias[adyacente] = pesos[("11",adyacente)]
     
-    nodo = None
+    w = None
 
     while (len(recorridos)!= len(llaves)):
         minimo = math.inf
 
         #Se halla el siguiente nodo a recorrer
         #No es n al cubo, caminos[nodo] nunca será mayor a 3
+        #w es el nodo menor peso
         for node in recorridos:
             for camino in caminos[node]:
                 if camino not in recorridos and pesos[(node,camino)]<minimo:
                     minimo = pesos[(node,camino)]
-                    nodo = camino
+                    w = camino
 
-        #w es el nodo menor peso
-        w = nodo
         #Se halla la mínima distancia acumulada hasta w
         for adyacente in caminos[w]:
             distancias[adyacente] = min(distancias[adyacente],distancias[w] + pesos[(w,adyacente)])
