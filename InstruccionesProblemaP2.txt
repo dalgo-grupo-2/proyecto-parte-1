@@ -8,8 +8,8 @@ Para compilar y ejecutar este programa seguir las siguientes instrucciones:
 
 2. Ir a la carpeta donde se encuentra el archivo ProblemaP1.py utilizando el comando cd:
 
-cd C:\Usuarios\jorge\carpeta1\carpeta2\...\
+cd C:\Usuarios\sergio\carpeta1\carpeta2\...\
 
 3. Hacer referencia al archivo ProblemaP1.py
 
-python ProblemaP1.py < P1.in > P1.out
+python ProblemaP2.py < P2.in > P2.out
