@@ -15,41 +15,45 @@ def torreDeTeletransportacion(caminos:dict, pesos:dict)->int:
     #Llaves: "nodo de Entrada"
     #Valores: "peso hasta el nodo"
     distancias = {}
-
+    recorridos= {}
     #Lista de los nodos que ya se han marcado: ["nodo","nodo"]
-    recorridos = ["11"]
-
+    posiblesCaminos = []
     #Lista de llaves: ["nodo","nodo"]
     llaves = list(caminos.keys())
     #Se llena el diccionario de distancias con infinitos
     for nodo in llaves:
         distancias[nodo] = math.inf
+        recorridos[nodo] = False
 
     #Se relajan los pesos para los que se puede llegar en el inicio
     for adyacente in caminos["11"]:
         distancias[adyacente] = pesos[("11",adyacente)]
-    
-    w = None
-
-    while (len(recorridos)!= len(llaves)):
+        posiblesCaminos.append(("11",adyacente))
+    w = "11"
+    recorridos[w]=True
+    continuar = True
+    anterior = None
+    while (w!=llaves[-1] and continuar == True):
         minimo = math.inf
-
-        #Se halla el siguiente nodo a recorrer
-        #No es n al cubo, caminos[nodo] nunca será mayor a 3
-        #w es el nodo menor peso
-        for node in recorridos:
-            for camino in caminos[node]:
-                if camino not in recorridos and pesos[(node,camino)]<minimo:
-                    minimo = pesos[(node,camino)]
-                    w = camino
+        for camino in posiblesCaminos:    
+            if pesos[camino]<minimo:
+                minimo = pesos[camino]
+                w = camino[1]
+                anterior = camino[0]
+        recorridos[w]=True
+        posiblesCaminos.pop(posiblesCaminos.index((anterior,w)))
+            
+        if minimo == math.inf:
+            continuar = False
 
         #Se halla la mínima distancia acumulada hasta w
         for adyacente in caminos[w]:
             distancias[adyacente] = min(distancias[adyacente],distancias[w] + pesos[(w,adyacente)])
-        
+            if recorridos[adyacente] == False:
+                posiblesCaminos.append((w,adyacente))
+        if len(posiblesCaminos)==0:
+            continuar = False
         #Se agrega el nodo de menor peso a los nodos recorridos
-        recorridos.append(w)
-
     masCorto = distancias[llaves[-1]]
     if masCorto == math.inf:
         masCorto = "NO EXISTE"
